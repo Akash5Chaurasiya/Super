@@ -15,6 +15,7 @@ import axios from 'axios';
 import Snackbar from 'react-native-snackbar';
 import Internet from '../../InternetCheck/Internet';
 import Feather from 'react-native-vector-icons/Feather'
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 export default function Navbar() {
     const[isConnected , setIsConnected] = useState(false);
@@ -57,14 +58,23 @@ export default function Navbar() {
                         resizeMode="cover"
                         source={ImageIndex.logo}
                     />
+                    
+
+                    
                     <View style={styles.companyNameWrapper}>
                         <Text style={styles.companyName}>Chawla Ispat</Text>
                     </View>
+                    <View style={styles.versionTextWrapper}>
+                            <Text style={styles.versionText}>Version 1.2.0</Text>
+                        </View>
+                       
+                    
                 </View>
+                
                 <View className='flex-col'>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                     <View style={{ marginRight: 5 }}>
-                        <Text>{auth.authData?.name}</Text>
+                        <Text style={{color:'black'}}>{auth.authData?.name}</Text>
                     </View>
                     <View>
                         <TouchableOpacity onPress={toggleModal}>
@@ -87,7 +97,7 @@ export default function Navbar() {
                 </View>
                 <View className='flex-row'>
                   
-                    {isConnected==true? <Text style={{fontWeight:'600',marginLeft:'8%'}}>cellular</Text>:<Text style={{fontWeight:'600',marginLeft:'8%'}}>No Net</Text>}
+                    {isConnected==true? <Text style={{fontWeight:'600',marginLeft:'8%', color:'black'}}>cellular</Text>:<Text style={{fontWeight:'600',marginLeft:'8%'}}>No Net</Text>}
                     {isConnected==true?
                     <Feather
                         color={'blue'}
@@ -170,5 +180,16 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').height * 0.04,
         height: Dimensions.get('window').height * 0.04,
         borderRadius: Dimensions.get('window').height * 0.02,
+    },
+    versionText: {
+        fontSize: 14, 
+        color: 'black', 
+        
+        marginLeft:responsiveWidth(-40),
+    },
+    versionTextWrapper: {
+        alignItems: 'center', 
+        marginTop: responsiveHeight(5), 
+        
     },
 })

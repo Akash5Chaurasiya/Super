@@ -6,9 +6,19 @@ import { RNHoleView } from 'react-native-hole-view';
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 import axios from 'axios';
 import Snackbar from 'react-native-snackbar';
+import LocalizedString from 'react-native-localization'
 
 
 const QrScanner = ({ navigation }: any) => {
+    let strings = new LocalizedString({
+        en:{
+            "qrScannedSuccess": "क्यूआर स्कैन सफलतापूर्वक हुआ",
+            "alreadyApproved": "पहले से मंजूर",
+            "needToPunchIn": "पहले पंच-इन करना होगा",
+            "errorScanningBarcode": "बारकोड स्कैन करते समय त्रुटि"
+              
+        }
+    })
     const devices = useCameraDevices();
     const device = devices.back;
     const [torchOn, setTorchOn] = useState(false);
@@ -55,7 +65,7 @@ const QrScanner = ({ navigation }: any) => {
                         const singleData = await axios.get(`https://chawlacomponents.com/api/v2/attendance/singleEmployee/${id}`);
 
                         Snackbar.show({
-                            text: 'QR Scanned Successfully',
+                            text: `${strings.qrScannedSuccess}`,
                             backgroundColor: 'green',
                             duration: 2000,
                         });
@@ -76,7 +86,7 @@ const QrScanner = ({ navigation }: any) => {
                         }
                         if (statusfromapi == "approved") {
                             Snackbar.show({
-                                text: 'Already Approved',
+                                text:  `${strings.alreadyApproved}`,
                                 backgroundColor: 'green',
                                 duration: 2000,
                             });
@@ -87,7 +97,7 @@ const QrScanner = ({ navigation }: any) => {
                         else if (punch == 'Punch In') {
                             // Alert.alert('Need to First Punch-In')
                             Snackbar.show({
-                                text: 'Need to First Punch-In',
+                                text: `${strings.needToPunchIn}`,
                                 backgroundColor: '#FFC72C',
                                 duration: 2000,
                             });
@@ -103,7 +113,7 @@ const QrScanner = ({ navigation }: any) => {
 
 
                         Snackbar.show({
-                            text: 'Error while scanning barcode',
+                            text: `${strings.errorScanningBarcode}`,
                             backgroundColor: '#FFC72C',
                             duration: 2000,
                         });
