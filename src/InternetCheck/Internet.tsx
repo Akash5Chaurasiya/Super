@@ -3,7 +3,15 @@ import React, {useEffect,useState} from 'react'
 import NetInfo from '@react-native-community/netinfo'
 import Modal from 'react-native-modal'
 
+import LocalizedString from 'react-native-localization'
+
 const Internet = ({isConnected, setIsConnected}:any) => {
+  let strings = new LocalizedString({
+    en:{
+        "InternetIssue": "ओह! लगता है कि आपका डिवाइस इंटरनेट से जुड़ा नहीं है। कृपया इंटरनेट कनेक्शन की जाँच करें।",
+     
+    }
+})
   const [isLoading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [isOffline, setOfflineStatus] = useState(false);
@@ -46,7 +54,7 @@ const Internet = ({isConnected, setIsConnected}:any) => {
      <View style={styles.modalContainer}>
          <Text style={styles.modalTitle}>Connection Error</Text>
          <Text style={styles.modalText}>
-             Oops! Looks like your device is not connected to the Internet.
+             {strings.InternetIssue}
          </Text>
          <Button onPress={checkConnection} disabled={isLoading}>
              Try Again

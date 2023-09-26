@@ -15,10 +15,20 @@ import login from './fetch/services/login';
 import { showMessage } from 'react-native-flash-message';
 import { ImageIndex } from '../../assets/AssetIndex';
 import Snackbar from 'react-native-snackbar';
+
+import LocalizedString from 'react-native-localization'
+
+
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    let strings = new LocalizedString({
+        en:{
+            "loginSuccess": "लॉगिन सफलतापूर्वक हुआ",
+            "loginFailed": "लॉगिन असफल"
+        }
+    })
 
     const auth = useAuthContext();
 
@@ -46,7 +56,7 @@ const Login = () => {
             //     floating: true
             // });
             Snackbar.show({
-                text: 'Login Successfully',
+                text: `${strings.loginSuccess}`,
                 backgroundColor: 'green',
                 duration: 3000,
             });
@@ -55,9 +65,11 @@ const Login = () => {
             console.log("login error:", error?.response.data.success);
             if (error?.response.data.success == false) {
                 Snackbar.show({
-                    text: 'Login failed',
+                    text: `${strings.loginFailed}`,
                     backgroundColor: '#DC143C',
                     duration: 3000,
+                    
+                    
                 });
             }
 

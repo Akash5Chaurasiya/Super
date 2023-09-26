@@ -24,6 +24,7 @@
     "react-native-camera": "^4.2.1",
     "react-native-flash-message": "^0.4.2",
     "react-native-hole-view": "^3.0.0-alpha3",
+    "react-native-localization": "^2.3.2",
     "react-native-modal": "^13.0.1",
     "react-native-permissions": "^3.9.0",
     "react-native-qrcode-scanner": "^1.5.5",

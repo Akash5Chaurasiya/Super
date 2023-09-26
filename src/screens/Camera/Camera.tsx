@@ -9,6 +9,8 @@ import { Image } from 'react-native';
 // import { showMessage } from 'react-native-flash-message';
 import Snackbar from 'react-native-snackbar';
 // const BASE_URL = 'https://chawlacomponents.com/api/v2'
+import LocalizedString from 'react-native-localization'
+
 
 
 // const requestMultiplePermissions = async (permissions, title, message) => {
@@ -66,6 +68,16 @@ import Snackbar from 'react-native-snackbar';
 // };
 
 const Camera = ({ navigation, route }: any) => {
+    let strings = new LocalizedString({
+        en:{
+            
+              
+                "imageUploadSuccess": "चित्र अपलोड सफलतापूर्वक हुआ",
+                "approvalSuccess": "मंजूरी सफलतापूर्वक हुई",
+                "errorInApprovedAttendance": "मंजूरी करते समय त्रुटि"
+              
+        }
+    })
 
     const [image, setImage] = useState(null);
     const [showPhoto, setShowPhoto] = useState(false);
@@ -168,7 +180,7 @@ const Camera = ({ navigation, route }: any) => {
             });
 
             Snackbar.show({
-                text: 'Image upload successfully',
+                text: `${strings.imageUploadSuccess}`,
                 backgroundColor: 'green',
                 duration: 4000,
             });
@@ -185,7 +197,7 @@ const Camera = ({ navigation, route }: any) => {
             console.log('calling after approve ', response)
             // Alert.alert('approved successfully');
             Snackbar.show({
-                text: 'Approved successfully',
+                text: `${strings.approvalSuccess}`,
                 backgroundColor: 'green',
                 duration: 4000,
             });
@@ -195,7 +207,7 @@ const Camera = ({ navigation, route }: any) => {
             console.log('Error uploading image:', err);
             // Alert.alert('Error uploading image');
             Snackbar.show({
-                text: 'Error uploading image',
+                text: `${strings.errorInApprovedAttendance}`,
                 backgroundColor: '#DC143C',
                 duration: 4000,
             });
