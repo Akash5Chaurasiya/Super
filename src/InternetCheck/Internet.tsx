@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
       textAlign: 'center',
   },
   modalText:{
-    fontSize:14,
+    fontSize:15,
     fontWeight:'600',
     // color:'black'
   }

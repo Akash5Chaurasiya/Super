@@ -61,7 +61,9 @@ const QrScanner = ({ navigation }: any) => {
                         let punch = resData?.data?.punch
                         let empData = resData?.data?.employee
                         let id = resData?.data?.employee._id
-                        console.log('punnchhhhh', punch)
+                        console.log('punnchhhhh', punch, pic , empData)
+                        console.log("piicc", pic)
+                        console.log("emp data",empData )
                         const singleData = await axios.get(`https://chawlacomponents.com/api/v2/attendance/singleEmployee/${id}`);
 
                         Snackbar.show({

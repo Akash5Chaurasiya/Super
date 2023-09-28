@@ -3,13 +3,16 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import axios from 'axios'
 import { ImageIndex } from '../../assets/AssetIndex'
+import { Picker } from '@react-native-picker/picker';
 
 
 const ApprovalLogs = () => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<any>([]);
+    const [pendingdata, setPendingdata] = useState<any>([]);
     const [selectedImageUrl, setSelectedImageUrl] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('Approved');
 
     const handleOpenButtonPress = (imageUrl: any) => {
         console.log('im from here img', imageUrl);
@@ -33,7 +36,12 @@ const ApprovalLogs = () => {
             const data = response.data.data;
             console.log('datale', data)
             setData(data);
+            const pendingResponse = await axios.get(`https://chawlacomponents.com/api/v2/attendance/employeeUnderMe`)
+            const pendingdata = pendingResponse.data.attendance;
+            const pendingData = pendingdata.filter((e:any) => e.status === "pending");
+            console.log('pendinglogs', pendingData)
 
+            setPendingdata(pendingData)
 
 
         }
@@ -42,24 +50,52 @@ const ApprovalLogs = () => {
         }
     }
     useEffect(() => {
-  fetchNoData();
+        fetchNoData();
 
     }, []);
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <Navbar />
             <View style={{ padding: 15, flex: 1, marginBottom: 10 }}>
-                <View style={{ margin: 15 }}>
-                    <Text style={{ fontSize: 20, color: '#2E2E2E', fontWeight: '700' }}>ApprovalLogs</Text>
+                <View style={{ margin: 15, flexDirection: 'row', justifyContent: 'space-around', }}>
+
+                    <Text style={{ fontSize: 22, color: '#2E2E2E', fontWeight: '700' }}>ApprovalLogs</Text>
+
+                    <View style={{
+                       
+                        width: '50%',
+                      
+                        borderColor: '#DEDEDE',
+                        borderRadius: 3,
+                        borderWidth: 1,
+                    }}>
+
+                        <Picker
+                            style={{
+                                backgroundColor: 'white',
+                                // color: '#283093',
+                                color:'black',
+                                fontWeight:'600'
+                               
+
+                            }}
+                            selectedValue={selectedOption}
+                            onValueChange={itemValue => setSelectedOption(itemValue)}
+                        >
+                            <Picker.Item label="Approved" value="Approved" />
+                            <Picker.Item label="Pending" value="Pending" />
+                        </Picker>
+                    </View>
 
                 </View>
 
+
                 <ScrollView horizontal={true}
-                  
-                   
-                    >
+
+
+                >
                     {/* header */}
-                    <View>
+                    {selectedOption=='Approved'?(  <View>
                         <View style={styles.tableHeader}>
                             <View style={styles.tableDataH}>
                                 <Text
@@ -172,7 +208,127 @@ const ApprovalLogs = () => {
                             )}
 
                         />
-                    </View>
+                    </View>):( 
+                        // {pendingdata.length ===0 ? <Text>no one left as pending</Text>
+                        // :(
+                            <View>
+                            <View style={styles.tableHeader}>
+                                <View style={styles.tableDataH}>
+                                    <Text
+                                        style={{
+                                            fontSize: 18,
+                                            color: '#2E2E2E',
+                                            fontFamily: 'Inter-Medium',
+                                        }}>
+                                        Date
+                                    </Text>
+                                </View>
+                                <View style={styles.tableDataH}>
+                                    <Text
+                                        style={{
+                                            fontSize: 18,
+                                            color: '#2E2E2E',
+                                            fontFamily: 'Inter-Medium',
+                                        }}>
+                                        Name
+                                    </Text>
+                                </View>
+                                <View style={styles.tableDataH}>
+                                    <Text
+                                        style={{
+                                            fontSize: 18,
+                                            color: '#2E2E2E',
+                                            fontFamily: 'Inter-Medium',
+                                        }}>
+                                        Status
+                                    </Text>
+                                </View>
+                                {/* <View style={styles.tableDataH}>
+                                    <Text
+                                        style={{
+                                            fontSize: 18,
+                                            color: '#2E2E2E',
+                                            fontFamily: 'Inter-Medium',
+                                        }}>
+                                        Photo
+                                    </Text>
+                                </View> */}
+                            </View>
+    
+                            {/* body */}
+                            <FlatList
+                                data={pendingdata}
+                                refreshControl={
+                                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                                }
+    
+    
+    
+                                renderItem={({ item: v, index }) => (
+    
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+    
+                                        <View style={styles.tableData}>
+                                            <View style={{ flexShrink: 1 }}>
+                                                <Text
+                                                    style={{
+                                                        color: 'black',
+                                                        fontFamily: 'Inter-Medium',
+                                                    }}>
+                                                    {v.date ? v.date.split('T')[0] : ''}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.tableData}>
+                                            <View style={{ flexShrink: 1 }}>
+                                                <Text
+                                                    style={{
+                                                        color: 'black',
+                                                        fontFamily: 'Inter-Medium',
+                                                    }}>
+                                                    {v.employeeId.name}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.tableData}>
+                                            <View style={{ flexShrink: 1, flexBasis: '100%' }}>
+    
+                                                <Text
+                                                    style={{
+                                                        color: 'black',
+                                                        fontFamily: 'Inter-Medium',
+                                                    }}>
+                                                    {v.status}
+                                                </Text>
+    
+                                            </View>
+                                        </View>
+                                        {/* <View style={styles.tableData}>
+                                            <View style={{ flexShrink: 1, flexBasis: '100%' }}>
+                                                <TouchableOpacity onPress={() => handleOpenButtonPress(v.approvedImage)}>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                        <Text
+                                                            style={{
+                                                                color: 'black',
+                                                                fontFamily: 'Inter-Medium',
+                                                            }}>
+                                                            Open
+                                                        </Text>
+                                                        <Image style={{ width: 15, height: 15, marginLeft: 4 }} source={ImageIndex.arrowout} />
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View> */}
+                                    </View>
+    
+                                )}
+    
+                            />
+                        </View>
+                        // )
+                        // }
+                      )}
+                  
                     {selectedImageUrl && (
                         <Modal
                             visible={isModalVisible}

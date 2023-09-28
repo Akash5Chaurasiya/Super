@@ -5,6 +5,7 @@ import Navbar from '../../components/Navbar/Navbar';
 // import { showMessage } from 'react-native-flash-message';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import axios from 'axios';
+import Snackbar from 'react-native-snackbar';
 
 
 const EmployeeDetail = ({ route, navigation }: any) => {
@@ -12,6 +13,9 @@ const EmployeeDetail = ({ route, navigation }: any) => {
     const { pic, punch, empData } = route.params;
     console.log('dataon emplyy', pic, punch, empData)
     const id = empData._id;
+    // const approved = 'approved';
+    // const date = data.date;
+    // const  PunchIn 
 
     const handleConfirm = async () => {
         try {
@@ -28,8 +32,9 @@ const EmployeeDetail = ({ route, navigation }: any) => {
                 console.log('date', date)
                 const punches = data.punches;
                 console.log('punches', punches)
+                console.log("length", punches.length)
                 let PunchIn;
-                // Extract punchIn times from the punches array
+                // // Extract punchIn times from the punches array
                 // const punchIn = punches.map((punch: any) => punch[0].punchIn);
                 // console.log('punchessingleeee', punchIn)
                 if (punches.length > 0) {
@@ -45,7 +50,13 @@ const EmployeeDetail = ({ route, navigation }: any) => {
             } else {
                 console.log('No data found in the API response');
             }
+            // navigation.navigate('Camera', { id, approved, PunchIn, date });
         } catch (error) {
+            Snackbar.show({
+                text: 'error coming from scanning data',
+                backgroundColor: '#DC143C',
+                duration: 4000,
+            });
             console.error('Error:', error);
         }
     };

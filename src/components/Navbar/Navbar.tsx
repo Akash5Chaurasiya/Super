@@ -65,7 +65,7 @@ export default function Navbar() {
                         <Text style={styles.companyName}>Chawla Ispat</Text>
                     </View>
                     <View style={styles.versionTextWrapper}>
-                            <Text style={styles.versionText}>Version 2.3.0</Text>
+                            <Text style={styles.versionText}>version 2.3.0</Text>
                         </View>
                        
                     
