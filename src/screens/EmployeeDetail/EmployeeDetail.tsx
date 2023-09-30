@@ -122,7 +122,7 @@ const EmployeeDetail = ({ route, navigation }: any) => {
     return (
         <View style={{ flex: 1, backgroundColor: '#FAFAFA' }}>
             <Navbar />
-            <View style={{ padding: 12, marginBottom: 30 }} >
+            <View style={{ paddingHorizontal:19, marginBottom: 30 , marginTop:12}} >
                 <Text style={{ fontSize: 25, fontWeight: '700', color: '#2E2E2E', justifyContent: 'center', }}>Employee Details</Text>
             </View>
 
@@ -133,7 +133,7 @@ const EmployeeDetail = ({ route, navigation }: any) => {
                     }}
                     style={styles.profileImage}
                 />)}
-
+               <Text style={{fontWeight:'700', color:'#949494', fontSize:17}}>Employee Code {empData.employeeCode}</Text>
                 <Text style={styles.name}>{empData.name}</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
@@ -173,8 +173,8 @@ const styles = StyleSheet.create({
 
     },
     profileImage: {
-        width: 100,
-        height: 100,
+        width: 110,
+        height: 120,
         borderRadius: 50,
         marginBottom: 10,
     },

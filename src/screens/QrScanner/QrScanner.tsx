@@ -48,7 +48,7 @@ const QrScanner = ({ navigation }: any) => {
             barcodes.forEach(async (scannedBarcode) => {
                 if (scannedBarcode.rawValue && scannedBarcode.rawValue !== '') {
                     setBarcode(scannedBarcode.rawValue);
-                    console.log(scannedBarcode.rawValue);
+                    console.log("barcodescannedata",scannedBarcode.rawValue);
                     let data = scannedBarcode.rawValue;
                     try {
                         console.log('ammmmm')

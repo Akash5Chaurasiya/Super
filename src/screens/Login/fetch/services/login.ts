@@ -6,6 +6,9 @@ export interface LoginCredentials {
     email?: string;
     password: string;
     phone?: number;
+    userAgent?:any; 
+    platform?:any
+    ipAddress?:any
 }
 
 enum RoleIndex {

@@ -17,6 +17,9 @@ import { ImageIndex } from '../../assets/AssetIndex';
 import Snackbar from 'react-native-snackbar';
 
 import LocalizedString from 'react-native-localization'
+import DeviceInfo from 'react-native-device-info';
+import { NetworkInfo} from 'react-native-network-info';
+
 
 
 const Login = () => {
@@ -31,19 +34,33 @@ const Login = () => {
     })
 
     const auth = useAuthContext();
+    
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
     const handleLogin = async () => {
+        const userAgentdata = DeviceInfo.getUserAgent();
+        const userAgent = userAgentdata
+
+    const platform = DeviceInfo.getSystemName();
+    let  ipAddress:any ;
+    console.log("useragent", userAgent)
+    console.log("platform", platform)
+    
+    NetworkInfo.getIPV4Address().then(ipv4Address => {
+        console.log("iiipaddress",ipv4Address);
+        ipAddress=ipv4Address
+      });
         const isEmail = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
             email
         );
 
-        const data = isEmail ? { email, password } : { phone: +email, password };
+        // const data = isEmail ? { email, password, userAgent , platform, ipAddress } : { phone: +email, password , userAgent , platform, ipAddress};
 
-        console.log("data login ", data);
+        const data = isEmail ? { email, password}:{phone: +email, password };
+        console.log("data login<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ", data);
 
         try {
             const res = await login(data);

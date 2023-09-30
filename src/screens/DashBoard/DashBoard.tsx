@@ -6,6 +6,7 @@ import { responsiveHeight } from 'react-native-responsive-dimensions';
 import axios from 'axios'
 import Internet from '../../InternetCheck/Internet';
 import { Camera } from 'react-native-vision-camera';
+import Feather from 'react-native-vector-icons/Feather'
 
 
 
@@ -33,6 +34,7 @@ const DashBoard = ({ navigation }: any) => {
     const [shopName, setShopName] = useState('');
     const [len, setlen] = useState('');
     const [refreshing, setRefreshing] = useState(false);
+    const [pendingdata, setPendingdata] = useState<any>('');
     // const[isConnected , setIsConnected] = useState(false);
 
     const onRefresh = async () => {
@@ -93,6 +95,14 @@ const DashBoard = ({ navigation }: any) => {
             const datalen = response.data.total;
             console.log('datale', datalen)
             setlen(datalen);
+
+            //for pending
+            const pendingResponse = await axios.get(`https://chawlacomponents.com/api/v2/attendance/employeeUnderMe`)
+            const pendingdata = pendingResponse.data.attendance;
+            const pendingData = pendingdata.filter((e:any) => e.status === "pending");
+            console.log('pendinglogson dashboard', pendingData.length)
+
+            setPendingdata(pendingData.length)
 
 
         }
@@ -177,27 +187,59 @@ const DashBoard = ({ navigation }: any) => {
             >
 
 
-                <View style={{ padding: '5%', marginBottom: '20%', maxHeight: '90%' }} >
+                <View style={{ padding: '6%', marginBottom: '20%', maxHeight: '90%' }} >
 
                     <View style={{ flexDirection: 'column' }}>
-
+                                {/* <View style={{flexDirection:'row'}}> */}
                         {shopName ? (
                             <Text style={{ color: '#949494', fontWeight: '500', fontSize: 17 }}>{shopName}</Text>
                         ) : <Text style={{ color: '#949494', fontWeight: '500', fontSize: 17 }}>
                             NoShop</Text>}
-                        <Text style={{ color: '#2E2E2E', fontSize: 20, fontWeight: '700' }}>Today Staff Check-In</Text>
-                        <View style={{ width: '69%', height: '48%', borderRadius: 6, borderWidth: 1, marginTop: 10, justifyContent: 'center', alignItems: 'center', borderColor: '#DEDEDE' }}>
+                            
+                          
+                            {/* </View> */}
+                           
+
+                        <Text style={{ color: '#2E2E2E', fontSize: 20, fontWeight: '700' }}>Today Staff</Text>
+                        <View style={{flexDirection:'row', justifyContent:'space-around'}}>
+                        <View style={{ width: '40%', height: '75%', borderRadius: 6, borderWidth: 1, marginTop: 10, justifyContent: 'center', alignItems: 'center', borderColor: '#DEDEDE' }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
                                 {len ? (<Text style={{ fontSize: 25, fontWeight: '600', color: '#283093', }}>{len}</Text>) : <Text style={{ fontSize: 25, fontWeight: '600', color: '#283093', }}>0</Text>}
 
-                                <Image style={{ width: 19, height: 19 }} source={ImageIndex.arrowup} />
+                                <Feather
+                        color={'#283093'}
+                        name="arrow-up"
+                        size={23}
+                        // style={{marginLeft:9}}
+                       
+                    />
 
                             </View>
-                            {shopName ? (
-                                <Text style={{ color: 'black' }} >Under {shopName}</Text>
-                            ) : <Text style={{ color: 'black' }} >Under noshop</Text>}
+                           
+                                <Text style={{ color: 'black' }} >Check-In</Text>
+                            
 
                         </View>
+                        <View style={{ width: '40%', height: '75%', borderRadius: 6, borderWidth: 1, marginTop: 10, justifyContent: 'center', alignItems: 'center', borderColor: '#DEDEDE' }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center',  }} >
+                                {pendingdata ? (<Text style={{ fontSize: 25, fontWeight: '600', color: '#283093', }}>{pendingdata}</Text>) : <Text style={{ fontSize: 25, fontWeight: '600', color: '#283093', }}>0</Text>}
+
+                                <Feather
+                        color={'#283093'}
+                        name="arrow-down"
+                        size={23}
+                        // style={{marginLeft:9}}
+                       
+                    />
+
+                            </View>
+                           
+                                <Text style={{ color: 'black' }} >Pending logs</Text>
+                            
+
+                        </View>
+                        </View>
+                        
 
 
                     </View>

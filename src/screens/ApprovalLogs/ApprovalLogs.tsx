@@ -4,6 +4,8 @@ import Navbar from '../../components/Navbar/Navbar'
 import axios from 'axios'
 import { ImageIndex } from '../../assets/AssetIndex'
 import { Picker } from '@react-native-picker/picker';
+import Feather from 'react-native-vector-icons/Feather'
+import Snackbar from 'react-native-snackbar'
 
 
 const ApprovalLogs = () => {
@@ -39,7 +41,7 @@ const ApprovalLogs = () => {
             const pendingResponse = await axios.get(`https://chawlacomponents.com/api/v2/attendance/employeeUnderMe`)
             const pendingdata = pendingResponse.data.attendance;
             const pendingData = pendingdata.filter((e:any) => e.status === "pending");
-            console.log('pendinglogs', pendingData)
+            console.log('pendinglogs', pendingData.length)
 
             setPendingdata(pendingData)
 
@@ -48,6 +50,44 @@ const ApprovalLogs = () => {
         catch (err) {
             console.error('Error fetching data:', err);
         }
+    }
+
+    const handleReject = async ({id, PunchIn, date}:any) =>{
+        console.log("reject data", id, PunchIn, date)
+        const approveUrl = `https://chawlacomponents.com/api/v2/attendance/approveAttendance`;
+        try{
+            const requestData = {
+                employeeId: id,
+                status: "rejected", 
+                punchInTime: PunchIn,
+                date: date,
+            };
+            console.log('Data of approved', requestData);
+            const response = await axios.patch(approveUrl, requestData);
+            console.log('calling after rejected ', response)
+            // Alert.alert('approved successfully');
+            Snackbar.show({
+                text: 'सफलतापूर्वक अस्वीकृत',
+                backgroundColor: 'green',
+                duration: 4000,
+            });
+           
+            const updatedPendingData = pendingdata.filter((entry:any) => {
+                return entry.employeeId.id !== id || entry.punches[0].punchIn!== PunchIn || entry.date !== date;
+            });
+
+            setPendingdata(updatedPendingData);
+
+        }
+        catch(error) {
+            Snackbar.show({
+                text: 'error  in rejection ',
+                backgroundColor: '#DC143C',
+                duration: 4000,
+            });
+            console.error('Error:', error);
+        }
+
     }
     useEffect(() => {
         fetchNoData();
@@ -103,6 +143,7 @@ const ApprovalLogs = () => {
                                         fontSize: 18,
                                         color: '#2E2E2E',
                                         fontFamily: 'Inter-Medium',
+                                        fontWeight:'900'
                                     }}>
                                     Date
                                 </Text>
@@ -113,6 +154,7 @@ const ApprovalLogs = () => {
                                         fontSize: 18,
                                         color: '#2E2E2E',
                                         fontFamily: 'Inter-Medium',
+                                        fontWeight:'900'
                                     }}>
                                     Name
                                 </Text>
@@ -123,6 +165,7 @@ const ApprovalLogs = () => {
                                         fontSize: 18,
                                         color: '#2E2E2E',
                                         fontFamily: 'Inter-Medium',
+                                        fontWeight:'900'
                                     }}>
                                     Approve Time
                                 </Text>
@@ -133,6 +176,7 @@ const ApprovalLogs = () => {
                                         fontSize: 18,
                                         color: '#2E2E2E',
                                         fontFamily: 'Inter-Medium',
+                                        fontWeight:'900'
                                     }}>
                                     Photo
                                 </Text>
@@ -170,7 +214,7 @@ const ApprovalLogs = () => {
                                                     color: 'black',
                                                     fontFamily: 'Inter-Medium',
                                                 }}>
-                                                {v.employeeId.name}
+                                                {v.employeeId?.name}
                                             </Text>
                                         </View>
                                     </View>
@@ -219,6 +263,7 @@ const ApprovalLogs = () => {
                                             fontSize: 18,
                                             color: '#2E2E2E',
                                             fontFamily: 'Inter-Medium',
+                                            fontWeight:'900'
                                         }}>
                                         Date
                                     </Text>
@@ -229,6 +274,7 @@ const ApprovalLogs = () => {
                                             fontSize: 18,
                                             color: '#2E2E2E',
                                             fontFamily: 'Inter-Medium',
+                                            fontWeight:'900'
                                         }}>
                                         Name
                                     </Text>
@@ -239,20 +285,22 @@ const ApprovalLogs = () => {
                                             fontSize: 18,
                                             color: '#2E2E2E',
                                             fontFamily: 'Inter-Medium',
+                                            fontWeight:'900'
                                         }}>
                                         Status
                                     </Text>
                                 </View>
-                                {/* <View style={styles.tableDataH}>
+                                <View style={styles.tableDataH}>
                                     <Text
                                         style={{
                                             fontSize: 18,
                                             color: '#2E2E2E',
                                             fontFamily: 'Inter-Medium',
+                                            fontWeight:'900'
                                         }}>
-                                        Photo
+                                        Reject
                                     </Text>
-                                </View> */}
+                                </View>
                             </View>
     
                             {/* body */}
@@ -303,22 +351,34 @@ const ApprovalLogs = () => {
     
                                             </View>
                                         </View>
-                                        {/* <View style={styles.tableData}>
-                                            <View style={{ flexShrink: 1, flexBasis: '100%' }}>
-                                                <TouchableOpacity onPress={() => handleOpenButtonPress(v.approvedImage)}>
+                                        <View style={styles.tableData}>
+                                            <View style={{ flexShrink: 1, flexBasis: '100%' ,}}>
+                                                <TouchableOpacity style={{borderRadius:4, borderWidth:0.1, backgroundColor:'#283093', width:'50%', padding:'3%'}}
+                                                            onPress={() => handleReject({ id: v.employeeId._id, PunchIn: v.punches[0].punchIn, date: v.date })}
+                                                            >
+
                                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                         <Text
                                                             style={{
-                                                                color: 'black',
+                                                                color: 'white',
                                                                 fontFamily: 'Inter-Medium',
+                                                               marginLeft:'2%'
                                                             }}>
-                                                            Open
+                                                           Reject
                                                         </Text>
-                                                        <Image style={{ width: 15, height: 15, marginLeft: 4 }} source={ImageIndex.arrowout} />
+                                                        <Feather
+                                                            color={'white'}
+                                                            name="x"
+                                                            size={15}
+                                                            style={{marginLeft:3}}
+                                                            
+                                                        />
+
+                                                     
                                                     </View>
                                                 </TouchableOpacity>
                                             </View>
-                                        </View> */}
+                                        </View>
                                     </View>
     
                                 )}
@@ -370,9 +430,11 @@ const styles = StyleSheet.create({
         borderRadius: 8
     },
     tableData: {
-        paddingVertical: 7,
+        paddingVertical: 12,
         paddingLeft: 20,
         width: 160,
+        // borderBottomWidth:0.3,
+
         // width:80
     },
     tableDataH: {
