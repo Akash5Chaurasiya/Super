@@ -294,11 +294,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: '7%',
         borderRadius: 14,
-        marginTop: '185%',
+        marginTop: '175%',
         width: '35%',
         position: 'absolute',
         marginLeft: '60%',
-        marginRight: '5%'
+        marginRight: '5%',
+       
     },
     buttonText: {
         color: 'white',

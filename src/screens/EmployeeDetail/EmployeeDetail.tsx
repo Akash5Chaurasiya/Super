@@ -138,13 +138,13 @@ const EmployeeDetail = ({ route, navigation }: any) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
 
-                    <Text style={{ color: '#2E2E2E', fontSize: 18, }}>{empData.groupId.groupName}</Text>
+                    <Text style={{ color: '#2E2E2E', fontSize: 14, }}>{empData.groupId.groupName}</Text>
                     <Text style={{ color: '#2E2E2E', fontSize: 18, marginLeft: 8, fontWeight: '700' }}>|</Text>
-                    <Text style={{ color: '#2E2E2E', fontSize: 18, marginLeft: 9 }}>{empData.jobProfileId.jobProfileName}</Text>
+                    <Text style={{ color: '#2E2E2E', fontSize: 14, marginLeft: 9 }}>{empData.jobProfileId.jobProfileName}</Text>
                 </View>
             </View>
-            <View style={{ marginTop: responsiveHeight(38),  }}>
-                <TouchableOpacity style={{ backgroundColor: '#283093', marginLeft: 20, marginRight: 20, borderRadius: 9, padding: 20 , }} onPress={handleConfirm}>
+            <View style={{ marginTop: responsiveHeight(5),  }}>
+                <TouchableOpacity style={{ backgroundColor: '#283093', marginLeft: '10%', marginRight: '10%', borderRadius: 9, padding: '4%' , }} onPress={handleConfirm}>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={{ color: 'white', fontSize: 18 }}>Confirm Employee</Text>
                         <Image style={{ width: 19, height: 19, marginLeft: 12 }} source={ImageIndex.arrowright} />
@@ -160,13 +160,13 @@ export default EmployeeDetail;
 
 const styles = StyleSheet.create({
     container: {
-        padding: 30,
+        padding: '7%',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#F0F0F0',
-        marginLeft: '5%',
-        marginRight: '5%',
-        borderRadius: 9,
+        backgroundColor: '#F8F8F8',
+        marginLeft: '10%',
+        marginRight: '10%',
+        borderRadius: 12,
         borderWidth: 1,
         borderColor: '#DEDEDE',
 
@@ -174,13 +174,13 @@ const styles = StyleSheet.create({
     },
     profileImage: {
         width: 110,
-        height: 120,
+        height: 110,
         borderRadius: 50,
         marginBottom: 10,
     },
     name: {
-        fontSize: 20,
-        fontWeight: 'bold',
+        fontSize: 15,
+        fontWeight: '700',
         color: 'black'
     },
     email: {
