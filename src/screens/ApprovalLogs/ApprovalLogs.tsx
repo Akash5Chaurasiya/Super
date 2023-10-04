@@ -226,7 +226,7 @@ const ApprovalLogs = () => {
                                                     color: 'black',
                                                     fontFamily: 'Inter-Medium',
                                                 }}>
-                                                {v.approvedTime ? v.approvedTime.slice(11, 16) : ''}
+                                                {v.approvedTime ? v.approvedTime.slice(11, 16) : '-'}
                                             </Text>
 
                                         </View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import {
     Button,
     Text,
@@ -19,6 +19,7 @@ import Snackbar from 'react-native-snackbar';
 import LocalizedString from 'react-native-localization'
 import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo} from 'react-native-network-info';
+import axios from 'axios';
 
 
 
@@ -26,6 +27,30 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [userAgent, setUserAgent] = useState('');
+    const [ipAddress, setIpAddress] = useState('');
+    const [platform, setPlatform] = useState('');
+
+    useEffect(() => {
+        async function fetchIp() {
+            try {
+                const response = await axios.get('https://api.ipify.org?format=json');
+                const ipAddress = response.data.ip;
+                const { _j } = DeviceInfo.getUserAgent();
+                const platform = DeviceInfo.getSystemName();
+ 
+                setIpAddress(ipAddress);
+                setUserAgent(_j);
+                setPlatform(platform);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+ 
+        fetchIp();
+    }, []);
+    console.log("cccccccccccccccccccccccccccccccccc", userAgent)
+   console.log("checkkkkkkkkkkkkkkkk",userAgent, ipAddress, platform )
     let strings = new LocalizedString({
         en:{
             "loginSuccess": "लॉगिन सफलतापूर्वक हुआ",
@@ -41,37 +66,21 @@ const Login = () => {
     };
 
     const handleLogin = async () => {
-        const userAgentdata = DeviceInfo.getUserAgent();
-        const userAgent = userAgentdata
-
-    const platform = DeviceInfo.getSystemName();
-    let  ipAddress:any ;
-    console.log("useragent", userAgent)
-    console.log("platform", platform)
-    
-    NetworkInfo.getIPV4Address().then(ipv4Address => {
-        console.log("iiipaddress",ipv4Address);
-        ipAddress=ipv4Address
-      });
+     
         const isEmail = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
             email
         );
 
-        // const data = isEmail ? { email, password, userAgent , platform, ipAddress } : { phone: +email, password , userAgent , platform, ipAddress};
+        const data = isEmail ? { email, password, userAgent , platform, ipAddress } : { phone: +email, password , userAgent , platform, ipAddress};
 
-        const data = isEmail ? { email, password}:{phone: +email, password };
-        console.log("data login<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ", data);
+        // const data = isEmail ? { email, password}:{phone: +email, password };
+        console.log("data login<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<newwwwwwwwwwwwww ", data);
 
         try {
             const res = await login(data);
             console.log("data.userrr", res.data.user);
             console.log("Calling Auth", auth.actions.login(res.data.user));
-            // showMessage({
-            //     message: "Login Success",
-            //     type: "success",
-            //     duration: 6000,
-            //     floating: true
-            // });
+        
             Snackbar.show({
                 text: `${strings.loginSuccess}`,
                 backgroundColor: 'green',

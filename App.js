@@ -11,6 +11,7 @@ import EmployeeDetail from './src/screens/EmployeeDetail/EmployeeDetail';
 import ApprovalLogs from './src/screens/ApprovalLogs/ApprovalLogs';
 import Camera from './src/screens/Camera/Camera';
 import Internet from './src/InternetCheck/Internet'
+import ChangePassword from './src/screens/ChangePassword/ChangePassword'
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -61,6 +62,13 @@ const App = () => {
               }}
               name="Internet"
               component={Internet}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="ChangePassword"
+              component={ChangePassword}
             />
           </Stack.Navigator>
         </AuthGuard>

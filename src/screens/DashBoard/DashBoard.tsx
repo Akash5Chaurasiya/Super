@@ -178,7 +178,7 @@ const DashBoard = ({ navigation }: any) => {
 
 
 <View style={{ backgroundColor: 'white', flex: 1 }}>
-            <Navbar />
+            <Navbar navigation={navigation}/>
             <ScrollView
                 style={{ backgroundColor: 'white' }}
                 refreshControl={

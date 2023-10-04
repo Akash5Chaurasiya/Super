@@ -17,7 +17,7 @@ import Internet from '../../InternetCheck/Internet';
 import Feather from 'react-native-vector-icons/Feather'
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
-export default function Navbar() {
+export default function Navbar({navigation}:any) {
     const[isConnected , setIsConnected] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
     const [profilePicture, setProfilePicture] = useState('');
@@ -47,6 +47,11 @@ export default function Navbar() {
         auth.actions.logout()
 
     }
+    const handleChange= () => {
+
+    navigation.navigate('ChangePassword')
+
+    }
     console.log('phooot name', auth.authData?.name, auth.authData?.profilePicture)
     return (
         <>
@@ -60,23 +65,44 @@ export default function Navbar() {
                     />
                     
 
-                    
-                    <View style={styles.companyNameWrapper}>
+                    <View style={{flexDirection:'column'}}>
+                    <View style={{marginLeft:'2%'}}>
                         <Text style={styles.companyName}>Chawla Ispat</Text>
                     </View>
-                    <View style={styles.versionTextWrapper}>
-                            <Text style={styles.versionText}>version 2.3.1</Text>
+                    <View style={{marginLeft:'3%'}}>
+                            <Text style={styles.versionText}>version 2.3.3</Text>
+                        </View>
                         </View>
                        
                     
                 </View>
                 
-                <View className='flex-col'>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{flexDirection:'row', marginRight:'5%'}}>
+                <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems:'flex-end' , marginRight:'2%',}}>
                     <View style={{ marginRight: 5 }}>
-                        <Text style={{color:'black'}}>{auth.authData?.name}</Text>
+                        <Text style={{color:'black', fontSize:11}} >{auth.authData?.name} </Text>
                     </View>
-                    <View>
+                    <View className='flex-row '>
+                  
+                  {isConnected==true? <Text style={{fontWeight:'600',marginLeft:'8%', color:'black'}}>cellular</Text>:<Text style={{fontWeight:'600',marginLeft:'8%'}}>No Net</Text>}
+                  {isConnected==true?
+                  <Feather
+                      color={'blue'}
+                      name="wifi"
+                      size={18}
+                      style={{marginLeft:9}}
+                     
+                  />:<Feather
+                
+                  color={'red'}
+                  name="wifi-off"
+                  size={18}
+                  style={{marginLeft:9}}
+              />} 
+              </View>
+                    
+                </View>
+                <View>
                         <TouchableOpacity onPress={toggleModal}>
                             {profilePicture ? (
                                 <Image
@@ -95,25 +121,6 @@ export default function Navbar() {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View className='flex-row'>
-                  
-                    {isConnected==true? <Text style={{fontWeight:'600',marginLeft:'8%', color:'black'}}>cellular</Text>:<Text style={{fontWeight:'600',marginLeft:'8%'}}>No Net</Text>}
-                    {isConnected==true?
-                    <Feather
-                        color={'blue'}
-                        name="wifi"
-                        size={18}
-                        style={{marginLeft:9}}
-                       
-                    />:<Feather
-                  
-                    color={'red'}
-                    name="wifi-off"
-                    size={18}
-                    style={{marginLeft:9}}
-                />} 
-                </View>
-                </View>
             </View>
             <Modal
                 animationType="slide"
@@ -123,9 +130,16 @@ export default function Navbar() {
             >
                 <TouchableWithoutFeedback onPress={toggleModal}>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)', padding: 30, borderRadius: 10, borderWidth: 0.4, borderColor: 'gray' }}>
+                                <TouchableOpacity onPress={handleChange}>
+
+                                                
+                                <View style={{ backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 20, borderRadius: 10 , marginBottom:10}}>
+                                <Text style={{ color: '#283093', fontWeight: '500', fontSize: 18 }}>Change Password</Text>
+                                </View>
+                                </TouchableOpacity>
                         <TouchableOpacity onPress={handleFunc}>
 
-
+                                  
                             <View style={{ backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 20, borderRadius: 10 }}>
                                 <Text style={{ color: '#283093', fontWeight: '500', fontSize: 18 }}>Logout</Text>
                             </View>
@@ -154,14 +168,16 @@ const styles = StyleSheet.create({
         // backgroundColor: 'yellow',
         borderColor: '#D9D9D9',
         borderWidth: 1,
+        width:responsiveWidth(100)
     },
     logo: {
         height: 25,
-        marginLeft: 2,
+        // marginLeft: 1,
     },
     logoWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
+        // backgroundColor:'pink'
     },
     logoIcon: {
         width: Dimensions.get('window').height * 0.04,
@@ -180,12 +196,15 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').height * 0.04,
         height: Dimensions.get('window').height * 0.04,
         borderRadius: Dimensions.get('window').height * 0.02,
+        position:'absolute',
+        
+       
     },
     versionText: {
         fontSize: 14, 
         color: 'black', 
         
-        marginLeft:responsiveWidth(-40),
+        // marginLeft:responsiveWidth(-40),
     },
     versionTextWrapper: {
         alignItems: 'center', 
